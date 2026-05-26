@@ -37,7 +37,6 @@ It focuses on:
 ## Run with Docker
 
 Build and start the API server:
-
 ```bash
 docker compose up --build
 ```
@@ -48,7 +47,6 @@ curl http://127.0.0.1:8000/health
 ```
 
 Expected response:
-
 ```bash
 {"status":"ok"}
 ```

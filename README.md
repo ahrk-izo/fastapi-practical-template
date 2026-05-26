@@ -33,3 +33,22 @@ It focuses on:
 - Automated testing
 - Automated linting
 - CI workflow
+
+## Run with Docker
+
+Build and start the API server:
+
+```bash
+docker compose up --build
+```
+
+Health check:
+```bash
+curl http://127.0.0.1:8000/health
+```
+
+Expected response:
+
+```bash
+{"status":"ok"}
+```

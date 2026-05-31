@@ -8,4 +8,9 @@ services:
       - "8000:8000"
     volumes:
       - ./app:/app/app
+    environment:
+      APP_NAME: "FastAPI Practical Template"
+      APP_VERSION: "0.1.0"
+      APP_ENV: "development"
+      APP_DEBUG: "true"
     command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

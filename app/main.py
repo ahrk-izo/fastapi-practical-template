@@ -1,11 +1,19 @@
 from fastapi import FastAPI
 
+from app.config import get_settings
+
+settings = get_settings()
+
 app = FastAPI(
-    title="FastAPI Practical Template",
-    version="0.1.0",
+    title=settings.app_name,
+    version=settings.app_version,
+    debug=settings.debug,
 )
 
 
 @app.get("/health")
 def health_check() -> dict[str, str]:
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "environment": settings.environment,
+    }

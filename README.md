@@ -82,8 +82,28 @@ http://127.0.0.1:8000/health
 期待するレスポンス：
 
 ```json
-{"status":"ok"}
+{"status":"ok","environment":"local"}
 ```
+
+## 設定管理
+
+アプリケーション設定は `app/config.py` に集約しています。
+
+現在は以下の環境変数を使用できます。
+
+| 環境変数 | 内容 | デフォルト値 |
+|---|---|---|
+| `APP_NAME` | アプリケーション名 | `FastAPI Practical Template` |
+| `APP_VERSION` | アプリケーションバージョン | `0.1.0` |
+| `APP_ENV` | 実行環境名 | `local` |
+| `APP_DEBUG` | デバッグモード | `false` |
+
+例：
+
+```bash
+APP_ENV=development APP_DEBUG=true uv run uvicorn app.main:app --reload
+```
+
 
 ## Dockerでの起動
 
@@ -102,7 +122,7 @@ curl http://127.0.0.1:8000/health
 期待するレスポンス：
 
 ```json
-{"status":"ok"}
+{"status":"ok","environment":"development"}
 ```
 
 停止する場合：
@@ -110,6 +130,7 @@ curl http://127.0.0.1:8000/health
 ```bash
 docker compose down
 ```
+
 
 ## CI
 

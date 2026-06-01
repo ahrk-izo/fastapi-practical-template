@@ -33,11 +33,19 @@ FastAPIを使った、実務を意識したバックエンドAPIのテンプレ�
 fastapi-practical-template/
 ├── app/
 │   ├── __init__.py
+│   ├── config.py
+│   ├── logging_config.py
 │   └── main.py
 ├── tests/
+│   ├── test_config.py
+│   ├── test_logging_config.py
 │   └── test_main.py
 ├── .dockerignore
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── .gitignore
+├── .python-version
 ├── Dockerfile
 ├── docker-compose.yml
 ├── pyproject.toml
@@ -85,23 +93,24 @@ http://127.0.0.1:8000/health
 {"status":"ok","environment":"local"}
 ```
 
-## 設定管理
+## 環境変数を指定して起動する場合
 
-アプリケーション設定は `app/config.py` に集約しています。
-
-現在は以下の環境変数を使用できます。
-
-| 環境変数 | 内容 | デフォルト値 |
-|---|---|---|
-| `APP_NAME` | アプリケーション名 | `FastAPI Practical Template` |
-| `APP_VERSION` | アプリケーションバージョン | `0.1.0` |
-| `APP_ENV` | 実行環境名 | `local` |
-| `APP_DEBUG` | デバッグモード | `false` |
-
-例：
+環境変数を指定することで、アプリケーションの設定値を変更できます。
 
 ```bash
-APP_ENV=development APP_DEBUG=true uv run uvicorn app.main:app --reload
+APP_ENV=development APP_DEBUG=true LOG_LEVEL=DEBUG uv run uvicorn app.main:app --reload
+```
+
+ヘルスチェック：
+
+```bash
+curl -s http://127.0.0.1:8000/health -w "\n"
+```
+
+期待するレスポンス：
+
+```json
+{"status":"ok","environment":"development"}
 ```
 
 
@@ -116,7 +125,7 @@ docker compose up --build
 ヘルスチェック：
 
 ```bash
-curl http://127.0.0.1:8000/health
+curl -s http://127.0.0.1:8000/health -w "\n"
 ```
 
 期待するレスポンス：
@@ -131,6 +140,52 @@ curl http://127.0.0.1:8000/health
 docker compose down
 ```
 
+## 設定管理
+
+アプリケーション設定は `app/config.py` に集約しています。
+
+現在は以下の環境変数を使用できます。
+
+| 環境変数 | 内容 | デフォルト値 |
+|---|---|---|
+| `APP_NAME` | アプリケーション名 | `FastAPI Practical Template` |
+| `APP_VERSION` | アプリケーションバージョン | `0.1.0` |
+| `APP_ENV` | 実行環境名 | `local` |
+| `APP_DEBUG` | デバッグモード | `false` |
+| `LOG_LEVEL` | ログレベル | `INFO` |
+
+例：
+
+```bash
+APP_ENV=development APP_DEBUG=true LOG_LEVEL=DEBUG uv run uvicorn app.main:app --reload
+```
+
+
+## ロギング
+
+アプリケーションのログ設定は `app/logging_config.py` に集約しています。
+
+ログレベルは `LOG_LEVEL` 環境変数で変更できます。
+
+例：
+
+```bash
+LOG_LEVEL=DEBUG uv run uvicorn app.main:app --reload
+```
+
+Docker起動時は `docker-compose.yml` で以下の環境変数を指定しています。
+
+```yaml
+environment:
+  APP_NAME: FastAPI Practical Template
+  APP_VERSION: 0.1.0
+  APP_ENV: development
+  APP_DEBUG: "true"
+  LOG_LEVEL: DEBUG
+```
+
+これにより、Docker起動時は開発環境向けの設定でアプリケーションを起動できます。
+
 
 ## CI
 
@@ -144,6 +199,26 @@ uv run pytest
 ```
 
 これにより、コード変更時に最低限の品質確認を自動化しています。
+
+
+## 開発フロー
+
+このリポジトリでは、実務を意識して以下の流れで開発を進めています。
+
+```text
+Issue作成
+↓
+featureブランチ作成
+↓
+実装
+↓
+Pull Request作成
+↓
+CI確認
+↓
+mainブランチへマージ
+```
+
 
 ## このリポジトリで意識していること
 

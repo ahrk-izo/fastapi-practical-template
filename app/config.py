@@ -11,6 +11,7 @@ class Settings:
     app_version: str = "0.1.0"
     environment: str = "local"
     debug: bool = False
+    log_level: str = "INFO"
 
 
 def _get_bool_env(key: str, default: bool = False) -> bool:
@@ -49,4 +50,5 @@ def get_settings() -> Settings:
         app_version=getenv("APP_VERSION", Settings.app_version),
         environment=getenv("APP_ENV", Settings.environment),
         debug=_get_bool_env("APP_DEBUG", Settings.debug),
+        log_level=getenv("LOG_LEVEL", Settings.log_level),
     )

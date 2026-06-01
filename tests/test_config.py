@@ -71,3 +71,49 @@ def test_get_settings_uses_environment_variables(monkeypatch) -> None:
     )
 
     get_settings.cache_clear()
+
+
+def test_get_settings_returns_default_log_level() -> None:
+    """ログレベルが未設定の場合にSettingsのデフォルト値が返ることを確認する。
+
+    Returns:
+        None
+    """
+    get_settings.cache_clear()
+
+    settings = get_settings()
+
+    assert settings.app_name == "FastAPI Practical Template"
+    assert settings.app_version == "0.1.0"
+    assert settings.environment == "local"
+    assert settings.debug is False
+    assert settings.log_level == "INFO"
+
+
+def test_get_settings_uses_environment_log_level(monkeypatch) -> None:
+    """ログレベルが設定されている場合にget_settingsがその値を反映したSettingsを返すことを確認する。
+
+    Args:
+        monkeypatch: 環境変数を操作するためのpytestフィクスチャ。
+
+    Returns:
+        None
+    """
+    monkeypatch.setenv("APP_NAME", "Test API")
+    monkeypatch.setenv("APP_VERSION", "9.9.9")
+    monkeypatch.setenv("APP_ENV", "test")
+    monkeypatch.setenv("APP_DEBUG", "true")
+    monkeypatch.setenv("LOG_LEVEL", "DEBUG")
+
+    get_settings.cache_clear()
+    settings = get_settings()
+
+    assert settings == Settings(
+        app_name="Test API",
+        app_version="9.9.9",
+        environment="test",
+        debug=True,
+        log_level="DEBUG",
+    )
+
+    get_settings.cache_clear()

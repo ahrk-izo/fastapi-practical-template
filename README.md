@@ -66,17 +66,43 @@ fastapi-practical-template/
 uv sync
 ```
 
+## テスト・Lint・フォーマット
+
 ### テストの実行
 
 ```bash
 uv run pytest
 ```
 
-### Lintの実行
+### Lintチェック
 
 ```bash
 uv run ruff check .
 ```
+
+### Lintの自動修正
+
+```bash
+uv run ruff check . --fix
+```
+
+### コードフォーマット
+
+```bash
+uv run ruff format .
+```
+
+### PR作成前の確認
+
+PR作成前は、以下を実行します。
+
+```bash
+uv run ruff check . --fix
+uv run ruff format .
+uv run ruff check .
+uv run pytest
+```
+
 
 ## アプリケーションの起動
 

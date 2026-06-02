@@ -33,7 +33,7 @@ def test_get_bool_env_returns_default_when_env_not_set(monkeypatch) -> None:
 
 
 def test_get_bool_env_returns_true_for_truthy_values(monkeypatch) -> None:
-    """"true" などのtruthy文字列を設定した場合に_get_bool_envがTrueを返すことを確認する。
+    """ "true" などのtruthy文字列を設定した場合に_get_bool_envがTrueを返すことを確認する。
 
     Args:
         monkeypatch: 環境変数を操作するためのpytestフィクスチャ。

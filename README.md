@@ -17,6 +17,8 @@ FastAPIを使った、実務を意識したバックエンドAPIのテンプレ�
 - GitHub ActionsによるCI
 - 環境変数を使った設定管理
 - 実務で拡張しやすい構成
+- APIルーターを分割し、エンドポイント定義を管理しやすい構成にする
+
 
 ## 技術スタック
 
@@ -32,6 +34,9 @@ FastAPIを使った、実務を意識したバックエンドAPIのテンプレ�
 ```text
 fastapi-practical-template/
 ├── app/
+│   ├── routers/
+│   │   ├── __init__.py
+│   │   └── health.py
 │   ├── __init__.py
 │   ├── config.py
 │   ├── logging_config.py
@@ -61,17 +66,43 @@ fastapi-practical-template/
 uv sync
 ```
 
+## テスト・Lint・フォーマット
+
 ### テストの実行
 
 ```bash
 uv run pytest
 ```
 
-### Lintの実行
+### Lintチェック
 
 ```bash
 uv run ruff check .
 ```
+
+### Lintの自動修正
+
+```bash
+uv run ruff check . --fix
+```
+
+### コードフォーマット
+
+```bash
+uv run ruff format .
+```
+
+### PR作成前の確認
+
+PR作成前は、以下を実行します。
+
+```bash
+uv run ruff check . --fix
+uv run ruff format .
+uv run ruff check .
+uv run pytest
+```
+
 
 ## アプリケーションの起動
 

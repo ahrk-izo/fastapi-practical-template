@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from app.config import get_settings
 from app.logging_config import setup_logging
+from app.routers.health import router as health_router
 
 settings = get_settings()
 setup_logging(settings.log_level)
@@ -25,18 +26,4 @@ logger.info(
     settings.log_level,
 )
 
-
-@app.get("/health")
-def health_check() -> dict[str, str]:
-    """サービスの稼働状態と実行環境名を返す。
-
-    Returns:
-        "status": 常に "ok"
-        "environment": 環境変数 APP_ENV の値
-    """
-    logger.debug("Health check requested")
-
-    return {
-        "status": "ok",
-        "environment": settings.environment,
-    }
+app.include_router(health_router)

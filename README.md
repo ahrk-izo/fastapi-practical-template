@@ -17,6 +17,8 @@ FastAPIを使った、実務を意識したバックエンドAPIのテンプレ�
 - GitHub ActionsによるCI
 - 環境変数を使った設定管理
 - 実務で拡張しやすい構成
+- APIルーターを分割し、エンドポイント定義を管理しやすい構成にする
+
 
 ## 技術スタック
 
@@ -32,6 +34,9 @@ FastAPIを使った、実務を意識したバックエンドAPIのテンプレ�
 ```text
 fastapi-practical-template/
 ├── app/
+│   ├── routers/
+│   │   ├── __init__.py
+│   │   └── health.py
 │   ├── __init__.py
 │   ├── config.py
 │   ├── logging_config.py

@@ -39,10 +39,12 @@ fastapi-practical-template/
 │   │   └── health.py
 │   ├── __init__.py
 │   ├── config.py
+│   ├── error_handlers.py
 │   ├── logging_config.py
 │   └── main.py
 ├── tests/
 │   ├── test_config.py
+│   ├── test_error_handlers.py
 │   ├── test_logging_config.py
 │   └── test_main.py
 ├── .dockerignore
@@ -216,6 +218,50 @@ environment:
 ```
 
 これにより、Docker起動時は開発環境向けの設定でアプリケーションを起動できます。
+
+## エラーハンドリング
+
+共通エラーハンドリングは `app/error_handlers.py` に集約しています。
+
+HTTPエラーや想定外エラーが発生した場合、以下のような共通形式でレスポンスを返します。
+
+```json
+{
+  "error": {
+    "type": "http_error",
+    "message": "Not Found",
+    "status_code": 404
+  }
+}
+```
+
+### HTTPエラーの確認
+
+存在しないURLにアクセスすると、共通エラーレスポンス形式で404エラーを返します。
+
+```bash
+curl -s http://127.0.0.1:8000/not-found -w "\n"
+```
+
+期待するレスポンス：
+
+```json
+{"error":{"type":"http_error","message":"Not Found","status_code":404}}
+```
+
+想定外エラーの場合は、内部情報をレスポンスに含めず、以下の形式で返します。
+
+```json
+{
+  "error": {
+    "type": "internal_server_error",
+    "message": "Internal server error",
+    "status_code": 500
+  }
+}
+```
+
+想定外エラーの詳細はログに出力し、APIレスポンスには一般的なエラーメッセージのみを返します。
 
 
 ## CI

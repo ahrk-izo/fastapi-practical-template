@@ -94,6 +94,37 @@ uv run ruff check . --fix
 uv run ruff format .
 ```
 
+### テストカバレッジの確認
+
+pytest-cov を使って、テストカバレッジを確認します。
+
+```bash
+uv run pytest --cov=app --cov-report=term-missing
+```
+
+term-missing を指定すると、テストされていない行を確認できます。
+CIでは最低カバレッジ率を80%に設定しています。
+
+```bash
+uv run pytest --cov=app --cov-report=term-missing --cov-fail-under=80
+```
+
+HTML形式で確認する場合は、以下を実行する。
+
+```bash
+uv run pytest --cov=app --cov-report=html
+```
+
+実行後、htmlcov/index.html をブラウザで開く。
+
+```bash
+open htmlcov/index.html
+```
+
+CIでは、HTMLカバレッジレポートを coverage-html というartifactとして保存する。
+
+
+
 ### PR作成前の確認
 
 PR作成前は、以下を実行します。
@@ -103,6 +134,7 @@ uv run ruff check . --fix
 uv run ruff format .
 uv run ruff check .
 uv run pytest
+uv run pytest --cov=app --cov-report=term-missing  --cov-report=html
 ```
 
 
@@ -272,7 +304,7 @@ curl -s http://127.0.0.1:8000/not-found -w "\n"
 
 ```bash
 uv run ruff check .
-uv run pytest
+uv run pytest --cov=app --cov-report=term-missing
 ```
 
 これにより、コード変更時に最低限の品質確認を自動化しています。

@@ -26,3 +26,6 @@ htmlcov/
 # IDE / Editor
 .vscode/
 .idea/
+
+# AI
+.claude/

@@ -109,6 +109,21 @@ CIでは最低カバレッジ率を80%に設定しています。
 uv run pytest --cov=app --cov-report=term-missing --cov-fail-under=80
 ```
 
+HTML形式で確認する場合は、以下を実行する。
+
+```bash
+uv run pytest --cov=app --cov-report=html
+```
+
+実行後、htmlcov/index.html をブラウザで開く。
+
+```bash
+open htmlcov/index.html
+```
+
+CIでは、HTMLカバレッジレポートを coverage-html というartifactとして保存する。
+
+
 
 ### PR作成前の確認
 
@@ -119,7 +134,7 @@ uv run ruff check . --fix
 uv run ruff format .
 uv run ruff check .
 uv run pytest
-uv run pytest --cov=app --cov-report=term-missing
+uv run pytest --cov=app --cov-report=term-missing  --cov-report=html
 ```
 
 

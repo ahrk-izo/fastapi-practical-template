@@ -296,6 +296,58 @@ curl -s http://127.0.0.1:8000/not-found -w "\n"
 想定外エラーの詳細はログに出力し、APIレスポンスには一般的なエラーメッセージのみを返します。
 
 
+## タスク管理APIのサンプル
+
+このリポジトリでは、FastAPIのルーター分割、Pydanticスキーマ、テスト、共通エラーハンドリングの実装例として、簡単なタスク管理APIを用意しています。
+
+このAPIはサンプル実装のため、DBには保存せず、インメモリでタスクを管理します。
+
+### タスク一覧取得
+
+```bash
+curl -s http://127.0.0.1:8000/tasks -w "\n"
+````
+
+期待レスポンス：
+
+```json
+[]
+```
+
+### タスク作成
+
+```bash
+curl -s -X POST http://127.0.0.1:8000/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"READMEを更新する","description":"タスク管理APIの説明を追加する"}' \
+  -w "\n"
+```
+
+期待レスポンス：
+
+```json
+{"id":1,"title":"READMEを更新する","description":"タスク管理APIの説明を追加する","completed":false}
+```
+
+### タスク詳細取得
+
+```bash
+curl -s http://127.0.0.1:8000/tasks/1 -w "\n"
+```
+
+### 存在しないタスクIDを指定した場合
+
+```bash
+curl -s http://127.0.0.1:8000/tasks/999 -w "\n"
+```
+
+期待レスポンス：
+
+```json
+{"error":{"type":"http_error","message":"Task not found","status_code":404}}
+```
+
+
 ## CI
 
 このリポジトリでは、GitHub Actionsを使ってPull Request作成時およびmainブランチへのpush時に、Lintとテストを自動実行します。

@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from app.config import get_settings
 from app.logging_config import setup_logging
 from app.routers.health import router as health_router
+from app.routers.tasks import router as tasks_router
 from app.error_handlers import register_exception_handlers
 
 
@@ -21,7 +22,7 @@ app = FastAPI(
 
 register_exception_handlers(app)
 app.include_router(health_router)
-
+app.include_router(tasks_router)
 logger.info(
     "Application started: name=%s version=%s environment=%s debug=%s log_level=%s",
     settings.app_name,
